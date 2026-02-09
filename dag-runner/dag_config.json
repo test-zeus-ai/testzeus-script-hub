@@ -1,0 +1,20 @@
+{
+  "test_map": {
+    "slot_1": "dnvllfa4y",
+    "slot_2": "0vavlsclg",
+    "slot_3": "qz2hucvds",
+    "slot_4": "hdascastv",
+    "slot_5": "n6sddzugn",
+    "slot_6": "fy9ieviod",
+    "slot_7": "n4oeb65ku"
+  },
+  "dag": {
+    "slot_1": [],
+    "slot_2": ["slot_1"],
+    "slot_3": ["slot_2"],
+    "slot_4": ["slot_2", "slot_3"],
+    "slot_5": ["slot_4"],
+    "slot_6": ["slot_5"],
+    "slot_7": ["slot_6"]
+  }
+}

@@ -1,20 +1,22 @@
 {
   "test_map": {
-    "slot_1": "dnvllfa4y",
-    "slot_2": "0vavlsclg",
-    "slot_3": "qz2hucvds",
-    "slot_4": "hdascastv",
-    "slot_5": "n6sddzugn",
-    "slot_6": "fy9ieviod",
-    "slot_7": "n4oeb65ku"
+    "slot_1": "test-case-id-1",
+    "slot_2": "test-case-id-2",
+    "slot_3": "test-case-id-3",
+    "slot_4": "test-case-id-4",
+    "slot_5": "test-case-id-5",
+    "slot_6": "test-case-id-6",
+    "slot_7": "test-case-id-7"
   },
   "dag": {
     "slot_1": [],
     "slot_2": ["slot_1"],
     "slot_3": ["slot_2"],
-    "slot_4": ["slot_2", "slot_3"],
+    "slot_4": ["slot_2", "slot_3"], 
     "slot_5": ["slot_4"],
     "slot_6": ["slot_5"],
     "slot_7": ["slot_6"]
-  }
+  },
+  "test_env": "your-environment-id",
+  "notification_channels": ["channel-id-1", "channel-id-2"]
 }

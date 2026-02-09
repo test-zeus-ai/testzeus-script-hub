@@ -75,16 +75,23 @@ Edit `dag_config.json` to define your test execution flow:
   "dag": {
     "login": [],
     "checkout": ["login"]
-  }
+  },
+  "test_env": "your-environment-id",
+  "notification_channels": ["channel-id-1", "channel-id-2"]
 }
 ```
 
 **Configuration structure:**
 
-- `test_map`: Maps step names to TestZeus test IDs
-- `dag`: Defines dependencies (step -> list of dependencies)
-  - `"login": []` - No dependencies, runs first
-  - `"checkout": ["login"]` - Runs after "login" completes
+| Field | Required | Description |
+|-------|----------|-------------|
+| `test_map` | Yes | Maps step names to TestZeus test IDs |
+| `dag` | Yes | Defines dependencies (step -> list of dependencies) |
+| `test_env` | No | Test environment ID to assign to each test run group |
+| `notification_channels` | No | List of notification channel IDs |
+
+- `dag` values: `"login": []` = no dependencies (runs first), `"checkout": ["login"]` = runs after "login" completes
+- `test_env` and `notification_channels` can also be provided via CLI args. CLI args take precedence over config JSON values.
 
 ## Usage
 

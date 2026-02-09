@@ -548,7 +548,7 @@ def get_credentials(args: argparse.Namespace) -> Tuple[str, str, Optional[str]]:
     return email, password, base_url
 
 
-def load_config(config_path: str) -> Tuple[Dict[str, str], Dict[str, List[str]]]:
+def load_config(config_path: str) -> Dict[str, Any]:
     """
     Load and validate configuration from JSON file.
 
@@ -556,7 +556,7 @@ def load_config(config_path: str) -> Tuple[Dict[str, str], Dict[str, List[str]]]
         config_path: Path to JSON configuration file
 
     Returns:
-        Tuple of (test_map, dag)
+        Config dict with keys: test_map, dag, and optional test_env, notification_channels
 
     Raises:
         ValueError: If configuration is invalid
@@ -579,7 +579,12 @@ def load_config(config_path: str) -> Tuple[Dict[str, str], Dict[str, List[str]]]
 
     validate_dag(test_map, dag)
 
-    return test_map, dag
+    return {
+        "test_map": test_map,
+        "dag": dag,
+        "test_env": config.get("test_env"),
+        "notification_channels": config.get("notification_channels"),
+    }
 
 
 async def run(args: argparse.Namespace) -> int:
@@ -613,8 +618,19 @@ async def run(args: argparse.Namespace) -> int:
 
             # Step 3: Read JSON config
             print("\n[STEP 3] Loading configuration...")
-            test_map, dag = load_config(args.config)
+            config = load_config(args.config)
+            test_map = config["test_map"]
+            dag = config["dag"]
             print(f"  Loaded {len(test_map)} steps from {args.config}")
+
+            # CLI args override config JSON values
+            test_env = args.test_env or config.get("test_env")
+            notification_channels = args.notification_channels or config.get("notification_channels")
+
+            if test_env:
+                print(f"  Test environment: {test_env}")
+            if notification_channels:
+                print(f"  Notification channels: {notification_channels}")
 
             # Step 4: Execute based on DAG definition
             print("\n[STEP 4] Executing DAG...")
@@ -625,8 +641,8 @@ async def run(args: argparse.Namespace) -> int:
                 execution_mode=args.execution_mode,
                 poll_interval=args.poll_interval,
                 node_timeout=args.timeout,
-                test_env=args.test_env,
-                notification_channels=args.notification_channels
+                test_env=test_env,
+                notification_channels=notification_channels
             )
 
             # Step 5: Collect results

@@ -1,0 +1,46 @@
+name: Build dag-runner .pyz
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dag-runner/dag_runner.py"
+      - "dag-runner/pyproject.toml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install shiv
+        run: pip install shiv
+
+      - name: Build dag_runner.pyz
+        working-directory: dag-runner
+        run: |
+          shiv -c dag_runner -o dag_runner.pyz --compressed .
+          chmod +x dag_runner.pyz
+
+      - name: Verify .pyz runs
+        working-directory: dag-runner
+        run: python dag_runner.pyz --help
+
+      - name: Commit updated .pyz
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dag-runner/dag_runner.pyz
+          if git diff --cached --quiet; then
+            echo "No changes to .pyz, skipping commit"
+          else
+            git commit -m "chore: rebuild dag_runner.pyz"
+            git push
+          fi

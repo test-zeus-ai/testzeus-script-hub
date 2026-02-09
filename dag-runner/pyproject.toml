@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dag_runner"
+version = "0.1.0"
+description = "DAG-based Test Execution Script for TestZeus SDK"
+requires-python = ">=3.8"
+dependencies = [
+    "python-dotenv",
+    "python-dateutil",
+    "testzeus-sdk",
+]
+
+[project.scripts]
+dag_runner = "dag_runner:main"

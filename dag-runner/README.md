@@ -11,9 +11,13 @@ A CLI tool for executing TestZeus tests based on a DAG (Directed Acyclic Graph) 
 
 | File | Description |
 |------|-------------|
-| `dag_runner.pyz` | The executable (self-contained with all dependencies) |
+| `dag_runner.pyz` | The executable (auto-built from source, self-contained with all dependencies) |
+| `dag_runner.py` | Source code |
+| `pyproject.toml` | Package metadata and dependencies |
 | `credentials.txt.example` | Template for your credentials |
 | `dag_config.json` | DAG configuration file |
+
+> The `.pyz` is automatically rebuilt by CI whenever `dag_runner.py` or `pyproject.toml` is updated on `main`.
 
 ## Setup
 
@@ -136,11 +140,20 @@ python dag_runner.pyz --config dag_config.json --output results.json
 | `--email` | - | TestZeus email (alternative to env file) |
 | `--password` | - | TestZeus password (alternative to env file) |
 | `--base-url` | `https://pb.prod.testzeus.app` | TestZeus API base URL |
-| `--execution-mode` | `lenient` | Execution mode: `lenient` or `strict` |
 | `--poll-interval` | `30` | Seconds between status polls |
 | `--timeout` | `3600` | Timeout per node in seconds |
+| `--test-env` | - | Test environment ID to assign to each test run group |
+| `--notification-channels` | - | Space-separated list of notification channel IDs |
 
 ## Examples
+
+### With test environment and notifications
+
+```bash
+python dag_runner.pyz --config dag_config.json --credentials-file credentials.txt \
+  --test-env abc123def456ghi \
+  --notification-channels ch1abc123def456 ch2xyz789abc123
+```
 
 ### Sequential execution (A -> B -> C)
 
@@ -266,3 +279,15 @@ Example: If B depends on A, and A fails:
 - A: FAILED
 - B: SKIPPED (dependency failed)
 - C (independent): Continues to run
+
+## Development
+
+The `.pyz` is built with [shiv](https://github.com/linkedin/shiv) and automatically rebuilt by GitHub Actions on every push to `main` that touches `dag_runner.py` or `pyproject.toml`.
+
+### Building locally
+
+```bash
+pip install shiv
+cd dag-runner
+shiv -c dag_runner -o dag_runner.pyz --compressed .
+```

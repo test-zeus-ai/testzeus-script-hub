@@ -36,19 +36,23 @@ That's it. Results are written to a JSON file, and exit codes are CI-friendly (0
 
 ```
 testzeus-script-hub/
-├── README.md                  # You are here
+├── README.md                    # You are here
+├── .github/workflows/           # CI — auto-builds .pyz on push
 ├── dag-runner/
-│   ├── README.md              # Full docs for the DAG runner
-│   ├── dag_runner.pyz         # Self-contained executable
-│   ├── dag_config.json        # Example DAG configuration
+│   ├── README.md                # Full docs for the DAG runner
+│   ├── dag_runner.py            # Source code
+│   ├── pyproject.toml           # Package metadata & dependencies
+│   ├── dag_runner.pyz           # Auto-built executable (committed by CI)
+│   ├── dag_config.json          # Example DAG configuration
 │   └── credentials.txt.example
-└── ...                        # Future scripts
+└── ...                          # Future scripts
 ```
 
 Each script directory follows the same pattern:
 
+- **`*.py` + `pyproject.toml`** — Source code and dependencies
+- **`*.pyz`** — Self-contained executable (built with [shiv](https://github.com/linkedin/shiv), auto-rebuilt by CI)
 - **`README.md`** — Setup, usage, and configuration docs
-- **`*.pyz`** — Self-contained executable (built with [shiv](https://github.com/linkedin/shiv), bundles all dependencies)
 - **Config/example files** — Ready to copy and customize
 
 ## About TestZeus
@@ -64,11 +68,12 @@ Contributions are welcome! If you've built something useful with `testzeus-sdk`,
 ### Adding a new script
 
 1. Create a new directory with a descriptive name (e.g., `parallel-runner/`, `slack-notifier/`)
-2. Include a `README.md` with setup and usage instructions
-3. Bundle your script as a `.pyz` using [shiv](https://github.com/linkedin/shiv) so users don't need to install dependencies
+2. Include source code (`*.py`) and a `pyproject.toml` with dependencies
+3. Include a `README.md` with setup and usage instructions
 4. Add example config files with `.example` extensions
-5. Update the table in this README
-6. Open a pull request
+5. Add a CI workflow in `.github/workflows/` to auto-build the `.pyz` using [shiv](https://github.com/linkedin/shiv)
+6. Update the table in this README
+7. Open a pull request
 
 ### Guidelines
 

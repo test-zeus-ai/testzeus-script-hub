@@ -4,7 +4,7 @@ A CLI tool for executing TestZeus tests based on a DAG (Directed Acyclic Graph) 
 
 ## Prerequisites
 
-- Python 3.8 or higher installed on your machine
+- Python 3.11 or higher installed on your machine
 - TestZeus account credentials
 
 ## Included Files

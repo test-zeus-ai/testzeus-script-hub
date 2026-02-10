@@ -18,7 +18,7 @@ Sign up at [testzeus.com](https://testzeus.com) and grab your email/password.
 
 ### 2. Pick a script
 
-Each script lives in its own directory with a self-contained README, example configs, and a ready-to-run `.pyz` executable (no pip install needed — just Python 3.8+).
+Each script lives in its own directory with a self-contained README, example configs, and a ready-to-run `.pyz` executable (no pip install needed — just Python 3.11+).
 
 ### 3. Run it
 
@@ -77,7 +77,7 @@ Contributions are welcome! If you've built something useful with `testzeus-sdk`,
 
 ### Guidelines
 
-- Scripts should be self-contained and runnable with just Python 3.8+
+- Scripts should be self-contained and runnable with just Python 3.11+
 - Support credentials via file, environment variables, and CLI arguments
 - Use meaningful exit codes for CI/CD integration
 - Include example configurations
